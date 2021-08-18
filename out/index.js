@@ -1,17 +1,11 @@
-function initBotMaster(args) {
-    return {
-        world: {
-            width: args.width | 0,
-            height: args.width | 0,
-        },
-        codeBuffer: args.codeBuffer || new Array(),
-        outPut: args.outPut || function (s) { console.log(s); },
-        processRobot: function (r) { console.log("process"); }
-    };
-}
-var consoleOut = function (s) { return console.log(s); };
-var robot = { x: 0, y: 0 };
-var botMaster = initBotMaster({ width: 5, height: 5 });
-console.log("Hi");
-console.log(botMaster);
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
+const botMaster = require("./botmaster");
+const consoleOut = (s) => console.log(s);
+const robot = { x: 0, y: 0, facingDirection: null };
+// const botMaster: BotMaster = initBotMaster({width: 5, height: 5})
+const bm = botMaster.initBotMaster({ width: 5, height: 5 });
+console.log("Hisss");
+console.log(bm);
+console.log("Done");
 //# sourceMappingURL=index.js.map
