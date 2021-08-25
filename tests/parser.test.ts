@@ -1,4 +1,5 @@
 import { expect, assert } from 'chai'
+import { Direction } from '../src/botMaster'
 import * as parser from '../src/parser'
 
 describe('Parser tests', () => {
@@ -37,6 +38,30 @@ describe('Parser tests', () => {
 
             parser.functionsMap["HELLO_WORLD"].execute(a)
             expect(a.result).equal("Hello World!")
+        })
+
+        it("Should convert string token to allowed type", () => {
+            expect(parser.tokenToTypedValue("1")).equal(1)
+            expect(parser.tokenToTypedValue("NORTH")).deep.equal(Direction.NORTH)
+            expect(parser.tokenToTypedValue("Yo")).equal(undefined)
+            expect(parser.tokenToTypedValue("0.1")).equal(undefined)
+            expect(parser.tokenToTypedValue("-1")).equal(undefined)
+            expect(parser.tokenToTypedValue("")).equal(undefined)
+        })  
+
+        it("Should extract command executors and argument value", () => {
+           
+            const functionMap:parser.FunctionMapping = {
+                "ADD":
+                    {
+                        description: "ADD <x> 1 to <x>",
+                        execute: (a:number)=>{ return a+1}
+                    }
+            }
+            
+            const parsedLine = parser.parseLine("ADD 1",functionMap)
+            // console.log(parsedLine.execute(parsedLine.args))
+            
         })
     
     })

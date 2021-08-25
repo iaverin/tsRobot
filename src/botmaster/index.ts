@@ -1,15 +1,15 @@
 
- export type Direction = {
-    NORTH: "NORTH",
-    SOUTH: "SOUTH",
-    EAST: "EAST", 
-    WEST: "WEST" 
+ export const Direction = {
+    NORTH : {x: 0, y: 1},
+    SOUTH : {x: 0, y:-1 },
+    EAST : {x:1, y:0}, 
+    WEST : {x:-1, y:0}
 }
 
 export type Robot = {
     x: number | null,
     y: number | null,
-    facingDirection: Direction | null
+    facingDirection: typeof Direction | null
 }
 
 export type World = 
