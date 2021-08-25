@@ -24,6 +24,20 @@ describe('Parser tests', () => {
             expect(codeBuffer).to.deep.equal([])
 
         })
+
+        it("Should call function from function map", () =>{
+            let a = {result:""}
+            parser.functionsMap["HELLO_WORLD"].execute(a)
+            expect(a.result).equal("Hello World!")
+        })
+
+        it("Should extend functions map", () =>{
+            
+            let a = {result:""}
+
+            parser.functionsMap["HELLO_WORLD"].execute(a)
+            expect(a.result).equal("Hello World!")
+        })
     
     })
 

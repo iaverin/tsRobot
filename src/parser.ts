@@ -13,3 +13,17 @@ export function loadCodeFromString(s:string): Code | null {
     return code
         
 }
+
+type FunctionMapping = {
+    [token : string] : {
+        description: string,
+        execute(args:any): void
+    }
+}
+
+export const functionsMap: FunctionMapping  = {
+    "HELLO_WORLD": {
+        description: "test function",
+        execute: (args) => {args.result = "Hello World!"}
+    }, 
+}
