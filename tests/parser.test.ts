@@ -54,12 +54,15 @@ describe('Parser tests', () => {
             const functionMap:parser.FunctionMapping = {
                 "ADD":
                     {
-                        description: "ADD <x> 1 to <x>",
+                        description: "ADD <x>. Adding 1 to <x>",
                         execute: (a:number)=>{ return a+1}
                     }
             }
             
             const parsedLine = parser.parseLine("ADD 1",functionMap)
+            
+            expect(parsedLine).to.have.property("args")
+            // expect(parsedLine.execute(parsedLine.args)).equal(2)
             // console.log(parsedLine.execute(parsedLine.args))
             
         })

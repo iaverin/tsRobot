@@ -51,7 +51,7 @@ export function tokenToTypedValue(token:string): allowedArgumentTypes {
 
 }
 
-export function parseLine(line:string, functionsMap: FunctionMapping): ParsedLine | BotError | void {
+export function parseLine(line:string, functionsMap: FunctionMapping): ParsedLine | BotError | any {
     const [token, ...args] = line.split(" ")
     
     if (!(token in functionsMap)) {
