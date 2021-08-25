@@ -6,7 +6,7 @@
 npm install
 
 # Run tests
-npm run tests
+npm run test
 
 # Run the programs
 npm run run
