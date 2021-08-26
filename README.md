@@ -1,4 +1,103 @@
 
+# Implementaion approach 
+```
+const bot:BotState = initBot()
+type WorldState = {
+    board:{
+        width: number;
+        height: number; 
+    }, 
+    bot:{
+        x: number, 
+        y: number,
+        facingDirection:  Direction
+    }
+}
+
+let world = intWorld(board, bot, commands)
+
+while (nextCommand(world)){
+    world = applyCommand(world, nextCommad)
+
+    )
+    
+}
+
+function applyCommand(wolrd: WorldState, nextCommand: parsedCommand) => WolrdState {
+    
+    if (nextCommand.error) {
+
+        //... 
+        reportParsingError(nextCommand.error.message)
+        return wolrd;
+    } 
+
+    let nextWolrd = copy(wolrd)
+
+    swtich (nextCommand.token){
+        case 'PLACE': {
+            
+            if(!checkPlaceParams(args, world)) {
+                reportPlaceError(args)
+                return world
+            }
+
+            const x = nextcommand.args[0]
+            const y = nextcommand.args[1]
+            const facing = nextcommand.args[2]
+            
+            
+          
+            break;
+        }
+     /// ... 
+
+    } 
+
+    return nextWolrd 
+
+}  
+
+
+
+```
+````
+
+PLACE X,Y,F
+  commandToken = 
+  args X,Y,F
+
+const Direction = {
+    NORTH : {x: 0, y: 1},
+    SOUTH : {x: 0, y:-1 },
+    EAST : {x:1, y:0}, 
+    WEST : {x:-1, y:0}
+}
+
+parsedCommand = type {
+    commandToken: sting, 
+    args: Array<{number | typeof Direction}}> 
+    execute: (args: Array<{number | typeof Direction}}>)=>any, 
+    error?: BotError | undefined
+} 
+
+allowedCommands = type {
+    [string]: parsedCommands
+} 
+
+function world placeCommand(x:number, y:number, directin: Direction){
+    
+} 
+
+
+MOVE
+LEFT
+RIGHT
+REPORT
+
+
+```
+
 # Starting the challange 
 
 ```bash
