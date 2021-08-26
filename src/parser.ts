@@ -26,7 +26,7 @@ export type Token = {
 
 export enum BotErrorType {
      COMMAND_NOT_FOUND = 1,
-     WRONG_PARAMS = 2, 
+     UNKWONW_ARGUMENT_TYPE = 2, 
      RUNTIME_ERROR = 3
 }
 
@@ -70,6 +70,11 @@ export function parseLine(line:string, functionsMap: FunctionMapping): ParsedLin
         }
         else{
                 // report error
+                // TODO: provide correct error message
+                return  {
+                    type: BotErrorType.UNKWONW_ARGUMENT_TYPE,
+                    message: `Argument ${arg} has unknown type`
+                } as BotError
         }
 
     })
@@ -87,7 +92,7 @@ export type FunctionMapping = {
 }
 
 type ParsedLine = {
-    execute(args: any): any, 
+    execute(...args: any): any, 
     args: Array<allowedArgumentTypes> 
 }
 

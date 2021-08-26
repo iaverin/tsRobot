@@ -62,7 +62,7 @@ describe('Parser tests', () => {
             const parsedLine = parser.parseLine("ADD 1",functionMap)
             
             expect(parsedLine).to.have.property("args")
-            // expect(parsedLine.execute(parsedLine.args)).equal(2)
+            expect(parsedLine.execute(...parsedLine.args)).equal(2)
             // console.log(parsedLine.execute(parsedLine.args))
             
         })
