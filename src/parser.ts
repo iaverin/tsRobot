@@ -25,12 +25,13 @@ export type Token = {
 }
 
 export enum BotErrorType {
-     COMMAND_NOT_FOUND = 1,
-     UNKWONW_ARGUMENT_TYPE = 2, 
-     RUNTIME_ERROR = 3
+     COMMAND_NOT_FOUND,
+     UNKWONW_ARGUMENT_TYPE,
+     WRONG_ARGUMENT_NUMBER,  
+     RUNTIME_ERROR
 }
 
-export type BotError = {
+export type BotParseError = {
     line: number,
     type: BotErrorType, 
     message: string, 
@@ -51,17 +52,34 @@ export function tokenToTypedValue(token:string): allowedArgumentTypes {
 
 }
 
-export function parseLine(line:string, functionsMap: FunctionMapping): ParsedLine | BotError | any {
+
+export type ParsedLine = {
+    error?: BotParseError,
+    execute(...args: any): any, 
+    args: Array<allowedArgumentTypes> 
+}
+
+export function parseLine(line:string, functionsMap: FunctionMapping): ParsedLine  {
     const [token, ...args] = line.split(" ")
     
     if (!(token in functionsMap)) {
-        return  {
-            type: BotErrorType.COMMAND_NOT_FOUND,
-            message: `Command ${token} not found`
-        } as BotError
+        return {
+            error: {
+                type: BotErrorType.COMMAND_NOT_FOUND,
+                message: `Command ${token} not found`
+            }
+        } as ParsedLine
     }
         
     const parsedLine: ParsedLine = { execute: functionsMap[token].execute, args:[]} 
+
+    if (parsedLine.execute.length !==  args.length) return {
+        error:{
+            message: `Worng arguments number: ${args.length}. Should be ${parsedLine.execute.length}`, 
+            type: BotErrorType.WRONG_ARGUMENT_NUMBER
+
+        } 
+    } as ParsedLine
 
     args.forEach((arg, i) => {
         const tokenValue =  tokenToTypedValue(arg)
@@ -69,12 +87,13 @@ export function parseLine(line:string, functionsMap: FunctionMapping): ParsedLin
             parsedLine.args.push(tokenValue)
         }
         else{
-                // report error
-                // TODO: provide correct error message
-                return  {
-                    type: BotErrorType.UNKWONW_ARGUMENT_TYPE,
-                    message: `Argument ${arg} has unknown type`
-                } as BotError
+            
+            return  {
+                    error:{
+                        type: BotErrorType.UNKWONW_ARGUMENT_TYPE,
+                        message: `Argument ${arg} has unknown type`
+                        }
+                    } as ParsedLine
         }
 
     })
@@ -91,10 +110,6 @@ export type FunctionMapping = {
     }
 }
 
-type ParsedLine = {
-    execute(...args: any): any, 
-    args: Array<allowedArgumentTypes> 
-}
 
 export const functionsMap: FunctionMapping  = {
     "HELLO_WORLD": {

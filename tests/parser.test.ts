@@ -58,12 +58,41 @@ describe('Parser tests', () => {
                         execute: (a:number)=>{ return a+1}
                     }
             }
-            
-            const parsedLine = parser.parseLine("ADD 1",functionMap)
-            
+
+            const parsedLine: parser.ParsedLine = parser.parseLine("ADD 1",functionMap)
+
             expect(parsedLine).to.have.property("args")
+            expect(parsedLine).to.have.property("args")
+            expect((parsedLine as parser.ParsedLine).args[0]).to.equal(1)
             expect(parsedLine.execute(...parsedLine.args)).equal(2)
-            // console.log(parsedLine.execute(parsedLine.args))
+            
+        })
+
+        it ("Parder should report error for  not founded command ", () => {
+            const functionMap:parser.FunctionMapping = {
+                "ADD":
+                    {
+                        description: "ADD <x>. Adding 1 to <x>",
+                        execute: (a:number)=>{ return a+1}
+                    }
+            }
+
+            const parsedLine: parser.ParsedLine = parser.parseLine("ADDDD 1",functionMap)
+
+            expect(parsedLine).to.have.property("error")
+            expect(parsedLine.error.type).to.deep.equal(parser.BotErrorType.COMMAND_NOT_FOUND)
+
+        })
+
+        it("Parser should report error for wrong amount of arguments", () => {
+            expect(1).eq(0)
+        })
+
+        it("Parser should report error for wrong types of arguments", () => {
+            expect(1).eq(0)
+        })
+
+        it("Parsed should parse functionMap with several commands", ()=>{
             
         })
     
