@@ -5,7 +5,7 @@ import * as parser from '../src/parser'
 describe('Parser tests', () => {
 
         it("Should load code from string, trim and convert to uppercase ", () => {
-            
+
             const code = ` PLACE X,Y,F
             MOVE \t
             \n
@@ -33,7 +33,7 @@ describe('Parser tests', () => {
         })
 
         it("Should extend functions map", () =>{
-            
+
             let a = {result:""}
 
             parser.functionsMap["HELLO_WORLD"].execute(a)
@@ -47,10 +47,10 @@ describe('Parser tests', () => {
             expect(parser.tokenToTypedValue("0.1")).equal(undefined)
             expect(parser.tokenToTypedValue("-1")).equal(undefined)
             expect(parser.tokenToTypedValue("")).equal(undefined)
-        })  
+        })
 
         it("Should extract command executors and argument value", () => {
-           
+
             const functionMap:parser.FunctionMapping = {
                 "ADD":
                     {
@@ -61,14 +61,20 @@ describe('Parser tests', () => {
 
             const parsedLine: parser.ParsedLine = parser.parseLine("ADD 1",functionMap)
 
+            expect(parsedLine.command).to.equal("ADD")
             expect(parsedLine).to.have.property("args")
-            expect(parsedLine).to.have.property("args")
+            expect(parsedLine).to.not.have.property("error")
             expect((parsedLine as parser.ParsedLine).args[0]).to.equal(1)
             expect(parsedLine.execute(...parsedLine.args)).equal(2)
-            
+
+            expect(parser.parseLine(" ADD 1",functionMap).command).to.equal("ADD")
+            expect(parser.parseLine(" ADD ",functionMap).command).to.equal("ADD")
+            expect(parser.parseLine(" ADD ",functionMap).args).to.deep.equal([])
+
+
         })
 
-        it ("Parder should report error for  not founded command ", () => {
+        it ("Parser should report error for  not founded command ", () => {
             const functionMap:parser.FunctionMapping = {
                 "ADD":
                     {
@@ -85,16 +91,29 @@ describe('Parser tests', () => {
         })
 
         it("Parser should report error for wrong amount of arguments", () => {
-            expect(1).eq(0)
+            const functionMap:parser.FunctionMapping = {
+                "ADD":
+                    {
+                        description: "ADD <x>. Adding 1 to <x>",
+                        execute: (a:number)=>{ return a+1}
+                    },
+                "DECR": {
+                    description: "DECR X,Y. Decrememt X by Y",
+                    execute: (a: number, b: number)=>{return a-b}
+                }
+            }
+
+            const parsedLine = parser.parseLine("DECR 2 , 1 ", functionMap)
+            console.log(parsedLine)
+            expect(parsedLine).to.not.have.property("error")
+            expect(parser.parseLine("ADD", functionMap).error).to.deep.include({type:parser.BotErrorType.WRONG_ARGUMENT_NUMBER})
+            expect(parser.parseLine("DECR 1,2,3", functionMap).error).to.deep.include({type:parser.BotErrorType.WRONG_ARGUMENT_NUMBER})
+
         })
 
-        it("Parser should report error for wrong types of arguments", () => {
-            expect(1).eq(0)
-        })
+        it("Parser should report error for wrong types of arguments")
 
-        it("Parsed should parse functionMap with several commands", ()=>{
-            
-        })
-    
+        it("Parsed should parse functionMap with several commands")
+
     })
 
