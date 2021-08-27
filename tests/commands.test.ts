@@ -3,23 +3,23 @@ import { DIRECTION, RUNTIME_ERROR, WorldState } from '../src/core/commands'
 
 import { resolvers } from '../src/core/commands'
 
-describe('Test resolvers', () => {
-  const initialWorld: WorldState = {
-    board: {
-      height: 5,
-      width: 5
-    },
+const initialWorld: WorldState = {
+  board: {
+    height: 5,
+    width: 5
+  },
 
-    bot: {
-      x: 0,
-      y: 0,
-      facingDirection: DIRECTION.NORTH,
-      placed: false
-    },
+  bot: {
+    x: 0,
+    y: 0,
+    facingDirection: DIRECTION.NORTH,
+    placed: false
+  },
 
-    error: null
-  }
+  error: null
+}
 
+describe('Test PLACE resolver', () => {
   it('Should PLACE robot ', () => {
     const newWorld = resolvers.PLACE.resolve(initialWorld, 1, 1, DIRECTION.EAST)
     expect(newWorld).to.deep.include({
@@ -28,10 +28,9 @@ describe('Test resolvers', () => {
   })
 
   it('Should not PLACE robot out of border', () => {
-   
     expect(
       resolvers.PLACE.resolve(initialWorld, 10, 1, DIRECTION.EAST).error
-    ).to.deep.include({type: RUNTIME_ERROR.WRONG_ARGUMENT_VALUE})
+    ).to.deep.include({ type: RUNTIME_ERROR.WRONG_ARGUMENT_VALUE })
 
     expect(
       resolvers.PLACE.resolve(initialWorld, 1, 10, DIRECTION.EAST).error
@@ -42,8 +41,69 @@ describe('Test resolvers', () => {
     ).to.deep.include({ type: RUNTIME_ERROR.WRONG_ARGUMENT_VALUE })
 
     expect(
-      resolvers.PLACE.resolve(initialWorld, 1, 1, "STOP").error
+      resolvers.PLACE.resolve(initialWorld, 1, 1, 'STOP').error
     ).to.deep.include({ type: RUNTIME_ERROR.WRONG_ARGUMENT_VALUE })
+  })
+})
 
+describe('MOVE resolver', () => {
+  it('should not move if not placed', () => {
+    expect(resolvers.MOVE.resolve(initialWorld)).to.deep.equal(initialWorld)
+  })
+
+  it('should move NORTH till the end of board', () => {
+    let movedWorld = {
+      ...initialWorld,
+      bot: { x: 2, y: 2, facingDirection: DIRECTION.NORTH, placed: true }
+    }
+    expect(resolvers.MOVE.resolve(movedWorld).bot).to.deep.include({ y: 3 })
+
+    for (var i = 0; i < 10; i++) {
+      movedWorld = resolvers.MOVE.resolve(movedWorld)
+    }
+
+    expect(movedWorld.bot.y).to.equal(4)
+  })
+
+  it('should move SOUTH till the end of board', () => {
+    let movedWorld = {
+      ...initialWorld,
+      bot: { x: 2, y: 2, facingDirection: DIRECTION.SOUTH, placed: true }
+    }
+    expect(resolvers.MOVE.resolve(movedWorld).bot).to.deep.include({ y: 1 })
+
+    for (var i = 0; i < 10; i++) {
+      movedWorld = resolvers.MOVE.resolve(movedWorld)
+    }
+
+    expect(movedWorld.bot.y).to.equal(0)
+  })
+
+  it('should move EAST till the end of board', () => {
+    let movedWorld = {
+      ...initialWorld,
+      bot: { x: 2, y: 2, facingDirection: DIRECTION.EAST, placed: true }
+    }
+    expect(resolvers.MOVE.resolve(movedWorld).bot).to.deep.include({ x: 3 })
+
+    for (var i = 0; i < 10; i++) {
+      movedWorld = resolvers.MOVE.resolve(movedWorld)
+    }
+
+    expect(movedWorld.bot.x).to.equal(4)
+  })
+
+  it('should move WEST till the end of board', () => {
+    let movedWorld = {
+      ...initialWorld,
+      bot: { x: 2, y: 2, facingDirection: DIRECTION.WEST, placed: true }
+    }
+    expect(resolvers.MOVE.resolve(movedWorld).bot).to.deep.include({ x: 1 })
+
+    for (var i = 0; i < 10; i++) {
+      movedWorld = resolvers.MOVE.resolve(movedWorld)
+    }
+
+    expect(movedWorld.bot.x).to.equal(0)
   })
 })

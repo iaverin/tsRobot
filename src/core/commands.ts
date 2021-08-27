@@ -25,9 +25,9 @@ export type WorldState = {
     width: number
     height: number
   }
-  bot: BotState,
+  bot: BotState
   error: {
-    type: RUNTIME_ERROR,
+    type: RUNTIME_ERROR
     message: string
   } | null
 }
@@ -44,11 +44,15 @@ export function resolveInt(token: string): number {
     return tryNumber
   }
   return undefined
-} 
+}
 
 // Resolvers
-export const placeResolver = (world: WorldState, argX: string, argY: string, argDirection: string) => {
-
+export const placeResolver = (
+  world: WorldState,
+  argX: string,
+  argY: string,
+  argDirection: string
+) => {
   const x = resolveInt(argX)
   const y = resolveInt(argY)
   const direction = DIRECTION[argDirection]
@@ -61,7 +65,7 @@ export const placeResolver = (world: WorldState, argX: string, argY: string, arg
         message: 'Place error. Wrong argument value(-s).'
       }
     }
-  } 
+  }
 
   if (
     !(x >= 0 && x <= world.board.width && y >= 0 && y <= world.board.height)
@@ -73,8 +77,8 @@ export const placeResolver = (world: WorldState, argX: string, argY: string, arg
         message: 'Placing coordinaties out of board.'
       }
     }
-  } 
-  
+  }
+
   return {
     ...world,
     bot: {
@@ -84,7 +88,28 @@ export const placeResolver = (world: WorldState, argX: string, argY: string, arg
       placed: true
     }
   }
-  
+}
+
+export function moveResolver(world: WorldState): WorldState {
+  let bot = world.bot
+
+  if (!bot.placed) return { ...world }
+
+  if (bot.x < world.board.width - 1  && bot.facingDirection === DIRECTION.EAST)
+    bot.x += 1
+
+  if (bot.x > 0 && bot.facingDirection === DIRECTION.WEST) bot.x -= 1
+
+  if (bot.y < world.board.height - 1 && bot.facingDirection === DIRECTION.NORTH)
+    bot.y += 1
+
+  if (bot.y > 0 && bot.facingDirection === DIRECTION.SOUTH)
+    bot.y -= 1
+
+  return {
+    ...world,
+    bot:bot
+  }
 }
 
 // Commands resolvers mapping
@@ -95,6 +120,8 @@ export const resolvers: CommandResolverMapping = {
     resolve: placeResolver
   },
 
-
-
+  MOVE: {
+    description: 'Move the robot on board',
+    resolve: moveResolver
+  }
 }
