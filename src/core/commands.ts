@@ -1,4 +1,4 @@
-import { FunctionMapping } from './parser'
+import { CommandResolverMapping } from './parser'
 
 // Define types are using for proceeding commands
 
@@ -16,7 +16,7 @@ type BotState = {
   facingDirection: Direction
 }
 
-type WorldState = {
+export type WorldState = {
   board: {
     width: number
     height: number
@@ -43,12 +43,13 @@ export function tokenToTypedValue(token: string): allowedArgumentTypes {
   return undefined
 }
 
+
 // Commands implementation functions mapping
 
-export const commandsInmplementation: FunctionMapping = {
+export const commandsInmplementation: CommandResolverMapping = {
   PLACE: {
     description: 'Place the robot on board',
-    execute: (
+    resolve: (
       world: WorldState,
       x: number,
       y: number,

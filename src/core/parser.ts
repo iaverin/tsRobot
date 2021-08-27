@@ -1,5 +1,4 @@
-import { Func } from 'mocha'
-import { allowedArgumentTypes, tokenToTypedValue } from './commands'
+import { WorldState } from './commands'
 
 export type Code = Array<string>
 
@@ -32,18 +31,21 @@ export type BotParseError = {
   message: string
 }
 
+interface CommandResolver {
+  (world: WorldState, ...args: any): WorldState
+}
+
 export type ParsedLine = {
   error?: BotParseError
   command: string
-  args: Array<allowedArgumentTypes>
-  // execute(...args: any): any,
+  args: Array<any>
+  resolve: CommandResolver
 }
 
 export function parseLine(
   line: string,
-  functionsMap: FunctionMapping
+  resolvers: CommandResolverMapping
 ): ParsedLine {
-  // const [token, ...args] = line.split(" ")
   const codeLine = line.trim()
   const commandTokenEndPosition =
     codeLine.indexOf(' ') >= 0 ? codeLine.indexOf(' ') : codeLine.length
@@ -53,17 +55,39 @@ export function parseLine(
       ? codeLine.substring(commandTokenEndPosition).trim().split(',')
       : []
 
-  const parsedLine: ParsedLine = {
+  let parsedLine: ParsedLine = { command: token, resolve: undefined, args: [] }
+
+  if (!(token in resolvers)) {
+    return {
+      ...parsedLine,
+      error: {
+        type: BotErrorType.COMMAND_NOT_FOUND,
+        message: `Command ${token} not found`
+      }
+    } as ParsedLine
+  }
+
+  parsedLine = {
     command: token,
-    // execute: functionsMap[token].execute,
+    resolve: resolvers[token].resolve,
     args: []
   }
 
+  if (parsedLine.resolve.length !== args.length + 1)
+    return {
+      ...parsedLine,
+      error: {
+        message: `Worng arguments number: ${args.length}. Should be ${parsedLine.resolve.length}`,
+        type: BotErrorType.WRONG_ARGUMENT_NUMBER
+      }
+    } as ParsedLine
+
   args.forEach((arg, i) => {
     const trimmedArg = arg.trim()
-    const tokenValue = tokenToTypedValue(trimmedArg)
-    if (tokenValue) {
-      parsedLine.args.push(tokenValue)
+    // const tokenValue = tokenToTypedValue(trimmedArg)
+
+    if (trimmedArg) {
+      parsedLine.args.push(trimmedArg)
     } else {
       return {
         ...parsedLine,
@@ -78,19 +102,9 @@ export function parseLine(
   return parsedLine
 }
 
-export type FunctionMapping = {
-  [token: string]: {
+export type CommandResolverMapping = {
+  [command: string]: {
     description?: string
-    positionalArgsTypes?: Array<any> | null
-    execute(...args: Array<any>): void
-  }
-}
-
-export const functionsMap: FunctionMapping = {
-  HELLO_WORLD: {
-    description: 'test function',
-    execute: (args: any) => {
-      args.result = 'Hello World!'
-    }
+    resolve: CommandResolver
   }
 }
