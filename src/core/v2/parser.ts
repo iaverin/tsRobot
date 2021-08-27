@@ -1,7 +1,5 @@
 import { Func } from 'mocha'
-import { Direction } from './botmaster'
-
-export type allowedArgumentTypes = number | typeof Direction
+import { allowedArgumentTypes, tokenToTypedValue } from './commands'
 
 export type Code = Array<string>
 
@@ -32,19 +30,6 @@ export type BotParseError = {
   line: number
   type: BotErrorType
   message: string
-}
-
-export function tokenToTypedValue(token: string): allowedArgumentTypes {
-  const tryNumber: number = Number(token)
-
-  if (!!tryNumber && tryNumber > 0 && tryNumber % 1 === 0) {
-    return tryNumber
-  }
-
-  const tryDirection = Direction[token]
-  if (tryDirection) return tryDirection
-
-  return undefined
 }
 
 export type ParsedLine = {
