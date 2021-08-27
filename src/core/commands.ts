@@ -1,4 +1,4 @@
-import { CommandResolverMapping } from './parser'
+import { CommandResolverMapping, PARSER_ERROR } from './parser'
 
 // Define types are using for proceeding commands
 
@@ -31,7 +31,7 @@ export type WorldState = {
   output: string | null,
   
   error: {
-    type: RUNTIME_ERROR
+    type: RUNTIME_ERROR | PARSER_ERROR
     message: string
   } | null
 }

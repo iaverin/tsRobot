@@ -18,7 +18,7 @@ export type Token = {
   args: []
 }
 
-export enum ParserErrorType {
+export enum PARSER_ERROR {
   COMMAND_NOT_FOUND,
   UNKWONW_ARGUMENT_TYPE,
   WRONG_ARGUMENT_NUMBER,
@@ -26,8 +26,7 @@ export enum ParserErrorType {
 }
 
 export type ParserError = {
-  line: number
-  type: ParserErrorType
+  type: PARSER_ERROR
   message: string
 }
 
@@ -61,7 +60,7 @@ export function parseLine(
     return {
       ...parsedLine,
       error: {
-        type: ParserErrorType.COMMAND_NOT_FOUND,
+        type: PARSER_ERROR.COMMAND_NOT_FOUND,
         message: `Command ${token} not found`
       }
     } as ParsedLine
@@ -78,7 +77,7 @@ export function parseLine(
       ...parsedLine,
       error: {
         message: `Worng arguments number: ${args.length}. Should be ${parsedLine.resolve.length}`,
-        type: ParserErrorType.WRONG_ARGUMENT_NUMBER
+        type: PARSER_ERROR.WRONG_ARGUMENT_NUMBER
       }
     } as ParsedLine
 
@@ -92,7 +91,7 @@ export function parseLine(
       return {
         ...parsedLine,
         error: {
-          type: ParserErrorType.UNKWONW_ARGUMENT_TYPE,
+          type: PARSER_ERROR.UNKWONW_ARGUMENT_TYPE,
           message: `Argument ${trimmedArg} has unknown type`
         }
       } as ParsedLine

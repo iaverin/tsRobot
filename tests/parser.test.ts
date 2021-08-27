@@ -78,7 +78,7 @@ describe('Parser tests', () => {
 
     expect(parsedLine).to.have.property('error')
     expect(parsedLine.error.type).to.deep.equal(
-      parser.ParserErrorType.COMMAND_NOT_FOUND
+      parser.PARSER_ERROR.COMMAND_NOT_FOUND
     )
   })
 
@@ -100,10 +100,10 @@ describe('Parser tests', () => {
     const parsedLine = parser.parseLine('DECR 2 , 1 ', functionMap)
     expect(parsedLine).to.not.have.property('error')
     expect(parser.parseLine('TEST 1', functionMap).error).to.deep.include({
-      type: parser.ParserErrorType.WRONG_ARGUMENT_NUMBER
+      type: parser.PARSER_ERROR.WRONG_ARGUMENT_NUMBER
     })
     expect(parser.parseLine('DECR 1,2,3', functionMap).error).to.deep.include({
-      type: parser.ParserErrorType.WRONG_ARGUMENT_NUMBER
+      type: parser.PARSER_ERROR.WRONG_ARGUMENT_NUMBER
     })
   })
 
