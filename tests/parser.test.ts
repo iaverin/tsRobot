@@ -109,5 +109,4 @@ describe('Parser tests', () => {
 
   it('Parser should report error for wrong types of arguments')
 
-  it('Parsed should parse functionMap with several commands')
 })
