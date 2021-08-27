@@ -47,12 +47,12 @@ export function resolveInt(token: string): number {
 }
 
 // Resolvers
-export const placeResolver = (
+function placeResolver(
   world: WorldState,
   argX: string,
   argY: string,
   argDirection: string
-) => {
+) {
   const x = resolveInt(argX)
   const y = resolveInt(argY)
   const direction = DIRECTION[argDirection]
@@ -90,12 +90,12 @@ export const placeResolver = (
   }
 }
 
-export function moveResolver(world: WorldState): WorldState {
+function moveResolver(world: WorldState): WorldState {
   let bot = world.bot
 
   if (!bot.placed) return { ...world }
 
-  if (bot.x < world.board.width - 1  && bot.facingDirection === DIRECTION.EAST)
+  if (bot.x < world.board.width - 1 && bot.facingDirection === DIRECTION.EAST)
     bot.x += 1
 
   if (bot.x > 0 && bot.facingDirection === DIRECTION.WEST) bot.x -= 1
@@ -103,12 +103,36 @@ export function moveResolver(world: WorldState): WorldState {
   if (bot.y < world.board.height - 1 && bot.facingDirection === DIRECTION.NORTH)
     bot.y += 1
 
-  if (bot.y > 0 && bot.facingDirection === DIRECTION.SOUTH)
-    bot.y -= 1
+  if (bot.y > 0 && bot.facingDirection === DIRECTION.SOUTH) bot.y -= 1
 
   return {
     ...world,
-    bot:bot
+    bot: bot
+  }
+}
+
+function rightResolver(world: WorldState): WorldState {
+  let bot = world.bot
+  if (!bot.placed) return { ...world }
+
+  switch (bot.facingDirection) {
+    case DIRECTION.NORTH:
+      bot.facingDirection = DIRECTION.EAST
+      break
+    case DIRECTION.SOUTH:
+      bot.facingDirection = DIRECTION.WEST
+      break
+    case DIRECTION.EAST:
+      bot.facingDirection = DIRECTION.SOUTH
+      break
+    case DIRECTION.WEST:
+      bot.facingDirection = DIRECTION.NORTH
+      break
+  }
+
+  return {
+    ...world,
+    bot: bot
   }
 }
 
@@ -123,5 +147,9 @@ export const resolvers: CommandResolverMapping = {
   MOVE: {
     description: 'Move the robot on board',
     resolve: moveResolver
+  },
+  RIGHT: {
+    description: 'Make the robot looking RIGHT',
+    resolve: rightResolver
   }
 }
