@@ -18,16 +18,16 @@ export type Token = {
   args: []
 }
 
-export enum BotErrorType {
+export enum ParserErrorType {
   COMMAND_NOT_FOUND,
   UNKWONW_ARGUMENT_TYPE,
   WRONG_ARGUMENT_NUMBER,
   RUNTIME_ERROR
 }
 
-export type BotParseError = {
+export type ParserError = {
   line: number
-  type: BotErrorType
+  type: ParserErrorType
   message: string
 }
 
@@ -36,7 +36,7 @@ interface CommandResolver {
 }
 
 export type ParsedLine = {
-  error?: BotParseError
+  error?: ParserError
   command: string
   args: Array<any>
   resolve: CommandResolver
@@ -61,7 +61,7 @@ export function parseLine(
     return {
       ...parsedLine,
       error: {
-        type: BotErrorType.COMMAND_NOT_FOUND,
+        type: ParserErrorType.COMMAND_NOT_FOUND,
         message: `Command ${token} not found`
       }
     } as ParsedLine
@@ -78,7 +78,7 @@ export function parseLine(
       ...parsedLine,
       error: {
         message: `Worng arguments number: ${args.length}. Should be ${parsedLine.resolve.length}`,
-        type: BotErrorType.WRONG_ARGUMENT_NUMBER
+        type: ParserErrorType.WRONG_ARGUMENT_NUMBER
       }
     } as ParsedLine
 
@@ -92,7 +92,7 @@ export function parseLine(
       return {
         ...parsedLine,
         error: {
-          type: BotErrorType.UNKWONW_ARGUMENT_TYPE,
+          type: ParserErrorType.UNKWONW_ARGUMENT_TYPE,
           message: `Argument ${trimmedArg} has unknown type`
         }
       } as ParsedLine
