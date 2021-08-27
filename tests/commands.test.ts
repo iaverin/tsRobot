@@ -19,7 +19,7 @@ const initialWorld: WorldState = {
   error: null
 }
 
-describe('Test PLACE resolver', () => {
+describe('PLACE resolver', () => {
   it('Should PLACE robot ', () => {
     const newWorld = resolvers.PLACE.resolve(initialWorld, 1, 1, DIRECTION.EAST)
     expect(newWorld).to.deep.include({
@@ -47,11 +47,11 @@ describe('Test PLACE resolver', () => {
 })
 
 describe('MOVE resolver', () => {
-  it('should not move if not placed', () => {
+  it('Should not move if not placed', () => {
     expect(resolvers.MOVE.resolve(initialWorld)).to.deep.equal(initialWorld)
   })
 
-  it('should move NORTH till the end of board', () => {
+  it('Should move NORTH till the end of board', () => {
     let movedWorld = {
       ...initialWorld,
       bot: { x: 2, y: 2, facingDirection: DIRECTION.NORTH, placed: true }
@@ -65,7 +65,7 @@ describe('MOVE resolver', () => {
     expect(movedWorld.bot.y).to.equal(4)
   })
 
-  it('should move SOUTH till the end of board', () => {
+  it('Should move SOUTH till the end of board', () => {
     let movedWorld = {
       ...initialWorld,
       bot: { x: 2, y: 2, facingDirection: DIRECTION.SOUTH, placed: true }
@@ -79,7 +79,7 @@ describe('MOVE resolver', () => {
     expect(movedWorld.bot.y).to.equal(0)
   })
 
-  it('should move EAST till the end of board', () => {
+  it('Should move EAST till the end of board', () => {
     let movedWorld = {
       ...initialWorld,
       bot: { x: 2, y: 2, facingDirection: DIRECTION.EAST, placed: true }
@@ -93,7 +93,7 @@ describe('MOVE resolver', () => {
     expect(movedWorld.bot.x).to.equal(4)
   })
 
-  it('should move WEST till the end of board', () => {
+  it('Should move WEST till the end of board', () => {
     let movedWorld = {
       ...initialWorld,
       bot: { x: 2, y: 2, facingDirection: DIRECTION.WEST, placed: true }
