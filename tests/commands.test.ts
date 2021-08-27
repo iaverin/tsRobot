@@ -109,17 +109,17 @@ describe('MOVE resolver', () => {
 })
 
 describe('RIGHT Resolver', () => {
-/* ^^^^^^^^
+  /* ^^^^^^^^
       N 
     W   E
       S
-  ~~~~~~~~~ */ 
+  ~~~~~~~~~ */
 
-  it("If not PLACED skip the command", ()=>{
+  it('If not PLACED skip the command', () => {
     expect(resolvers.RIGHT.resolve(initialWorld)).to.deep.equal(initialWorld)
   })
-  
-  it('Looking NORTH turning RIGHT to EAST', () => {
+
+  it('Looking NORTH turning RIGHT to face EAST', () => {
     const turningWorld: WorldState = {
       ...initialWorld,
       bot: {
@@ -133,7 +133,7 @@ describe('RIGHT Resolver', () => {
     )
   })
 
-  it('Looking SOUTH turning RIGHT to WEST', () => {
+  it('Looking SOUTH turning RIGHT to face WEST', () => {
     const turningWorld: WorldState = {
       ...initialWorld,
       bot: {
@@ -147,7 +147,7 @@ describe('RIGHT Resolver', () => {
     )
   })
 
-  it('Looking EAST turning RIGHT to SOUTH', () => {
+  it('Looking EAST turning RIGHT to face SOUTH', () => {
     const turningWorld: WorldState = {
       ...initialWorld,
       bot: {
@@ -160,7 +160,8 @@ describe('RIGHT Resolver', () => {
       DIRECTION.SOUTH
     )
   })
-  it('Looking WEST turning RIGHT to NORTH', () => {
+
+  it('Looking WEST turning RIGHT to face NORTH', () => {
     const turningWorld: WorldState = {
       ...initialWorld,
       bot: {
@@ -171,6 +172,74 @@ describe('RIGHT Resolver', () => {
     }
     expect(resolvers.RIGHT.resolve(turningWorld).bot.facingDirection).to.equal(
       DIRECTION.NORTH
+    )
+  })
+})
+
+describe('LEFT Resolver', () => {
+  /* ^^^^^^^^
+      N 
+    W   E
+      S
+  ~~~~~~~~~ */
+  
+  it('If not PLACED skip the command',() => {
+    expect(resolvers.LEFT.resolve(initialWorld)).to.deep.equal(initialWorld)
+  })
+
+  it('Looking NORTH turn LEFT to face WEST', () => {
+    const turningWorld: WorldState = {
+      ...initialWorld,
+      bot: {
+        ...initialWorld.bot,
+        placed: true,
+        facingDirection: DIRECTION.NORTH
+      }
+    }
+    expect(resolvers.LEFT.resolve(turningWorld).bot.facingDirection).to.equal(
+      DIRECTION.WEST
+    )
+  })
+
+  it('Looking SOUTH turn LEFT to face EAST', () => {
+    const turningWorld: WorldState = {
+      ...initialWorld,
+      bot: {
+        ...initialWorld.bot,
+        placed: true,
+        facingDirection: DIRECTION.SOUTH
+      }
+    }
+    expect(resolvers.LEFT.resolve(turningWorld).bot.facingDirection).to.equal(
+      DIRECTION.EAST
+    )
+  })
+
+  it('Looking EAST turn LEFT to face NORTH', () => {
+    const turningWorld: WorldState = {
+      ...initialWorld,
+      bot: {
+        ...initialWorld.bot,
+        placed: true,
+        facingDirection: DIRECTION.EAST
+      }
+    }
+    expect(resolvers.LEFT.resolve(turningWorld).bot.facingDirection).to.equal(
+      DIRECTION.NORTH
+    )
+  })
+
+  it('Looking WEST turn LEFT to face SOUTH', () => {
+    const turningWorld: WorldState = {
+      ...initialWorld,
+      bot: {
+        ...initialWorld.bot,
+        placed: true,
+        facingDirection: DIRECTION.WEST
+      }
+    }
+    expect(resolvers.LEFT.resolve(turningWorld).bot.facingDirection).to.equal(
+      DIRECTION.SOUTH
     )
   })
 })

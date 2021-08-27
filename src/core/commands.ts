@@ -136,6 +136,31 @@ function rightResolver(world: WorldState): WorldState {
   }
 }
 
+function leftResolver(world: WorldState): WorldState {
+  let bot = world.bot
+  if (!bot.placed) return { ...world }
+
+  switch (bot.facingDirection) {
+    case DIRECTION.NORTH:
+      bot.facingDirection = DIRECTION.WEST
+      break
+    case DIRECTION.SOUTH:
+      bot.facingDirection = DIRECTION.EAST
+      break
+    case DIRECTION.EAST:
+      bot.facingDirection = DIRECTION.NORTH
+      break
+    case DIRECTION.WEST:
+      bot.facingDirection = DIRECTION.SOUTH
+      break
+  }
+
+  return {
+    ...world,
+    bot: bot
+  }
+}
+
 // Commands resolvers mapping
 
 export const resolvers: CommandResolverMapping = {
@@ -151,5 +176,9 @@ export const resolvers: CommandResolverMapping = {
   RIGHT: {
     description: 'Make the robot looking RIGHT',
     resolve: rightResolver
+  },
+  LEFT: {
+    description: 'Make the robot looking RIGHT',
+    resolve: leftResolver
   }
 }
