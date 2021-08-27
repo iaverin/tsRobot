@@ -25,7 +25,11 @@ export type WorldState = {
     width: number
     height: number
   }
-  bot: BotState
+  
+  bot: BotState,
+  
+  output: string | null,
+  
   error: {
     type: RUNTIME_ERROR
     message: string
@@ -44,6 +48,31 @@ export function resolveInt(token: string): number {
     return tryNumber
   }
   return undefined
+}
+
+// Commands resolvers mapping
+export const resolvers: CommandResolverMapping = {
+  PLACE: {
+    description: 'Place the robot on board',
+    resolve: placeResolver
+  },
+
+  MOVE: {
+    description: 'Move the robot on board',
+    resolve: moveResolver
+  },
+  RIGHT: {
+    description: 'Make the robot looking RIGHT',
+    resolve: rightResolver
+  },
+  LEFT: {
+    description: 'Make the robot looking RIGHT',
+    resolve: leftResolver
+  },
+  REPORT: {
+    description: 'REPORT current position on board',
+    resolve: reportResolver
+  }
 }
 
 // Resolvers
@@ -161,24 +190,14 @@ function leftResolver(world: WorldState): WorldState {
   }
 }
 
-// Commands resolvers mapping
-
-export const resolvers: CommandResolverMapping = {
-  PLACE: {
-    description: 'Place the robot on board',
-    resolve: placeResolver
-  },
-
-  MOVE: {
-    description: 'Move the robot on board',
-    resolve: moveResolver
-  },
-  RIGHT: {
-    description: 'Make the robot looking RIGHT',
-    resolve: rightResolver
-  },
-  LEFT: {
-    description: 'Make the robot looking RIGHT',
-    resolve: leftResolver
+function reportResolver(world:WorldState):WorldState{
+  if (!world.bot.placed){
+    return { ...world }
   }
+
+  return {
+    ...world,
+    output: `${world.bot.x},${world.bot.y},${world.bot.facingDirection}`
+  }
+ 
 }

@@ -16,7 +16,8 @@ const initialWorld: WorldState = {
     placed: false
   },
 
-  error: null
+  error: null,
+  output: null
 }
 
 describe('PLACE resolver', () => {
@@ -182,8 +183,8 @@ describe('LEFT Resolver', () => {
     W   E
       S
   ~~~~~~~~~ */
-  
-  it('If not PLACED skip the command',() => {
+
+  it('If not PLACED skip the command', () => {
     expect(resolvers.LEFT.resolve(initialWorld)).to.deep.equal(initialWorld)
   })
 
@@ -242,4 +243,36 @@ describe('LEFT Resolver', () => {
       DIRECTION.SOUTH
     )
   })
+})
+
+describe('REPORT test', () => {
+  
+  it('Should not report if placed', () => {
+    const reportWorld: WorldState = {
+      ...initialWorld,
+      bot: {
+        ...initialWorld.bot,
+        x: 1,
+        y: 2,
+        placed: false
+      }
+    }
+    expect(resolvers.REPORT.resolve(reportWorld).output).to.equal(null)
+  })
+
+
+  it('Should report if placed', () => {
+    const reportWorld: WorldState = {
+      ...initialWorld,
+      bot: {
+        ...initialWorld.bot,
+        x:1,
+        y:2,
+        placed: true
+      }
+    }
+    expect(resolvers.REPORT.resolve(reportWorld).output).to.equal('1,2,NORTH')
+  })
+
+
 })
