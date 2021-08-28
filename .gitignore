@@ -1,3 +1,4 @@
+out
 .prettier*
 node_modules
 **/.vscode/*

@@ -13,9 +13,13 @@ export type allowedArgumentTypes = number | DIRECTION
 
 // types casting functions from extracted argument value as string token to typed value
 export function resolveInt(token: string): number {
+  if(token.length === 0 ) return undefined
+    
   const tryNumber: number = Number(token)
 
-  if (!!tryNumber && tryNumber > 0 && tryNumber % 1 === 0) {
+  if (tryNumber===0) return 0
+
+  if (!!tryNumber && tryNumber >= 0 && tryNumber % 1 === 0) {
     return tryNumber
   }
   return undefined
@@ -57,7 +61,7 @@ function placeResolver(
   const y = resolveInt(argY)
   const direction = DIRECTION[argDirection]
 
-  if (!(x && y && direction)) {
+  if (!((!!x || x === 0)  && (!!y || y === 0) && direction)) {
     return {
       ...world,
       error: {

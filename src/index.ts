@@ -1,4 +1,4 @@
-import { DIRECTION, WorldState, runCommand } from "./botmaster"
+import { DIRECTION, WorldState, runCommand, runScript } from './botmaster'
 
 let world:WorldState ={
   board:{
@@ -15,7 +15,19 @@ let world:WorldState ={
   output: null 
 }
 
-world = runCommand(world, "PLACE 2 , 3, SOUTH")
-console.log("Error", world.error)
-console.log("Output", world.output)
-console.log("World", world)
+const commands = `
+PLACE 1,2,EAST
+MOVE
+MOVE
+LEFT
+MOVE
+REPORT
+
+`
+
+let afterScriptWorld = runScript(world, commands, (s)=>{console.log(s)})
+
+if(afterScriptWorld.error){
+  console.log('Error', afterScriptWorld.error)
+}
+

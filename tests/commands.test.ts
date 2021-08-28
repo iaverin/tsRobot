@@ -2,7 +2,7 @@ import { expect, assert } from 'chai'
 import { RUNTIME_ERROR } from '../src/botmaster/core/commands'
 
 import { DIRECTION, WorldState } from '../src/botmaster/core/types'
-import { resolvers } from '../src/botmaster/core/commands'
+import { resolveInt, resolvers } from '../src/botmaster/core/commands'
 
 const initialWorld: WorldState = {
   board: {
@@ -21,7 +21,34 @@ const initialWorld: WorldState = {
   output: null
 }
 
+describe('resolveInt', ()=>{
+  
+  it("Should resolve 0", ()=>{
+    expect(resolveInt("0")).to.equal(0)
+  })
+
+  it('Should resolve 5', () => {
+    expect(resolveInt('5')).to.equal(5)
+  })
+
+  it('Should not resolve float', () => {
+    expect(resolveInt('5.5')).to.equal(undefined)
+  })
+
+  it('Should not resolve empty string', () => {
+    expect(resolveInt('')).to.equal(undefined)
+  })
+})
+
 describe('PLACE resolver', () => {
+  
+  it('Should PLACE robot at 0,0 ', () => {
+    const newWorld = resolvers.PLACE.resolve(initialWorld, 0, 0, DIRECTION.EAST)
+    expect(newWorld).to.deep.include({
+      bot: { x: 0, y: 0, facingDirection: DIRECTION.EAST, placed: true }
+    })
+  })
+  
   it('Should PLACE robot ', () => {
     const newWorld = resolvers.PLACE.resolve(initialWorld, 1, 1, DIRECTION.EAST)
     expect(newWorld).to.deep.include({

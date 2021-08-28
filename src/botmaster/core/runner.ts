@@ -12,11 +12,20 @@ export type RunnerError =
     message: string 
  }
 
-export function runCommand(
-  world: WorldState,
-  command: string,
-  outputCallback?: Output
-): WorldState {
+export type Code = Array<string>
+
+export function loadCodeFromString(s: string): Code | null {
+  const code: Code = []
+
+  s.split('\n').forEach((v) => {
+    const codeLine = v.trim().toUpperCase()
+    if (codeLine !== '') code.push(codeLine)
+  })
+
+  return code
+}  
+
+export function runCommand( world: WorldState, command: string):WorldState {
 
   const cleanWolrd = { ...world, error: null, output: null }
   
@@ -32,15 +41,42 @@ export function runCommand(
     } as WorldState
   }
 
-  const updatedWorld = parsedLine.resolve(cleanWolrd, ...parsedLine.args)
+  const newWorld = parsedLine.resolve(cleanWolrd, ...parsedLine.args)
 
-  if (updatedWorld.error) {
-    return updatedWorld
+  if (newWorld.error) {
+    return newWorld
+  }
+ 
+  return newWorld
+}
+
+export function runScript(world:WorldState, script:string, outputCallback?: Output):WorldState{
+  
+  let newWorld = { ...world, error: null, output: null }
+  
+  const commands: Array<string> = loadCodeFromString(script) 
+  
+  if (commands.length <= 0) {
+    return newWorld
   }
 
-  if (updatedWorld.output && outputCallback) {
-    outputCallback(updatedWorld.output)
-  }
+  commands.forEach((command) => {
 
-  return updatedWorld
+    newWorld = runCommand(newWorld, command)
+
+    if (newWorld.error){
+      return {
+        ...newWorld
+      }
+    }
+
+    if (newWorld.output && outputCallback) {
+      outputCallback(newWorld.output)
+    }
+    
+  });
+
+  return {
+    ...newWorld
+  }
 }

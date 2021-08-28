@@ -1,5 +1,5 @@
 export * from "./core/types"
-export { runCommand } from "./core/runner"
+export * from "./core/runner"
 
 
 
