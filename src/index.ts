@@ -15,14 +15,12 @@ let world:WorldState ={
   output: null 
 }
 
-const commands = `
-PLACE 1,2,EAST
+const commands = `PLACE ,2,EAST
 MOVE
 MOVE
 LEFT
 MOVE
 REPORT
-
 `
 
 let afterScriptWorld = runScript(world, commands, (s)=>{console.log(s)})

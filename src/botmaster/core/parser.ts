@@ -59,15 +59,6 @@ export function parseLine(
     args: []
   }
 
-  if (parsedLine.resolve.length !== args.length + 1)
-    return {
-      ...parsedLine,
-      error: {
-        message: `Wrong arguments number: ${args.length}. Should be ${parsedLine.resolve.length-1}`,
-        type: PARSER_ERROR.WRONG_ARGUMENT_NUMBER
-      }
-    } as ParsedLine
-
   args.forEach((arg, i) => {
     const trimmedArg = arg.trim()
     // const tokenValue = tokenToTypedValue(trimmedArg)
@@ -84,6 +75,17 @@ export function parseLine(
       } as ParsedLine
     }
   })
+
+  if (parsedLine.resolve.length !== parsedLine.args.length + 1)
+    return {
+      ...parsedLine,
+      error: {
+        message: `Wrong argument values provided: ${parsedLine.args.length}. Should be ${
+          parsedLine.resolve.length - 1
+        }`,
+        type: PARSER_ERROR.WRONG_ARGUMENT_NUMBER
+      }
+    } as ParsedLine
 
   return parsedLine
 }

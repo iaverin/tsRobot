@@ -1,6 +1,6 @@
-import { WorldState } from './types'
+import { DIRECTION, WorldState } from './types'
 import { parseLine, PARSER_ERROR } from './parser'
-import { resolvers, RUNTIME_ERROR } from './commands'
+import { resolveInt, resolvers, RUNTIME_ERROR } from './commands'
 
 export interface Output {
   (message: string): void
@@ -24,6 +24,30 @@ export function loadCodeFromString(s: string): Code | null {
 
   return code
 }  
+
+export function initWorld(width:number, height:number): WorldState{
+
+  if (!(resolveInt(String(width)) && resolveInt(String(height)))){
+    throw(Error("World's width and height should be integers"))
+  }
+
+  return {
+    board:{
+      height:height,
+      width:width
+    },
+
+    bot:{
+      x:0,
+      y:0,
+      facingDirection:DIRECTION.NORTH,
+      placed:false
+    },
+    error: null,
+    output: null
+  } as WorldState
+
+}
 
 export function runCommand( world: WorldState, command: string):WorldState {
 
@@ -60,12 +84,14 @@ export function runScript(world:WorldState, script:string, outputCallback?: Outp
     return newWorld
   }
 
-  commands.forEach((command) => {
+  for(let command of commands) 
+   {
 
     newWorld = runCommand(newWorld, command)
 
     if (newWorld.error){
       return {
+
         ...newWorld
       }
     }
@@ -74,7 +100,7 @@ export function runScript(world:WorldState, script:string, outputCallback?: Outp
       outputCallback(newWorld.output)
     }
     
-  });
+  }
 
   return {
     ...newWorld
