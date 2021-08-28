@@ -85,6 +85,30 @@ describe('Runner', () => {
         expect(runner.runScript(world, script).bot).to.deep.include({x:1,y:1})
 
       })
+
+      it("Should ignore commands when unplaced and run when place", ()=>{
+          const script = `
+          MOVE
+          LEFT
+          MOVE
+          REPORT
+          PLACE 1,1,WEST
+          MOVE
+          REPORT
+          `
+          let buffer:Array<string> = []
+          
+          const fillBuffer:runner.Output  = (s:string)=>{
+                buffer.push(s)
+          } 
+
+          const newWorld:WorldState = runner.runScript(world, script, fillBuffer)
+          expect(buffer.length).to.equal(1)
+          expect(newWorld.bot.x).to.equal(0)
+          expect(newWorld.bot.y).to.equal(1)
+          expect(newWorld.output).to.equal('0,1,WEST')
+          expect(newWorld.error).not.to.exist
+      }) 
   })
 
   
