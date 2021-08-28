@@ -145,6 +145,12 @@ Robot's command management component is locacted under ```src/botmaster``` direc
 ```
 
 # Self evaluation
+### Overall
+- Code seems solid with maintained functional approach
+- No documentation and commenta in code provided
+- Some naming could be slight confusing
+   
+
 ### Maintainablity
 Thanks to typescript, separation of functional components and complete tests coverage it seems easy to maintain the code while adding or fixing something. 
 
@@ -154,7 +160,8 @@ It's easy to add additional commands with different parameters. Current parser a
 
 However introducing features such as IFs, FORs and etc will require signigicant efforts. 
 
-
+### Readiness for production 
+Ready for production. Has no internal state so ready for scaling ) 
 
 
 ## 
