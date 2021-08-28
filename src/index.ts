@@ -1,8 +1,8 @@
 import {
   WorldState,
-  runScript,
   initWorld,
-  loadCodeFromString
+  loadCodeFromString,
+  runScript  
 } from './botmaster'
 
 const world:WorldState =initWorld(5,5)
