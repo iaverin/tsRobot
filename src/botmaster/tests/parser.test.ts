@@ -1,6 +1,6 @@
 import { expect, assert } from 'chai'
-import * as parser from '../src/botmaster/core/parser'
-import { DIRECTION, WorldState } from '../src/botmaster/core/types'
+import * as parser from '../core/parser'
+import { DIRECTION, WorldState } from '../core/types'
 
 describe('Parser', () => {
   it('Should extract command executors and argument values', () => {

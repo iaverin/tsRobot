@@ -4,8 +4,8 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "run": "node out/index.js",
-    "test": "mocha -r ts-node/register 'tests/**/*.ts'"
+    "start": "tsc && node out/index.js",
+    "test": "mocha -r ts-node/register './src/botmaster/tests/*.ts'"
   },
   "keywords": [],
   "author": "",

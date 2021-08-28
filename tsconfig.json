@@ -7,5 +7,5 @@
   },
   "include": ["src/**/*"],
 
-  "exclude": ["./tests/"]
+  "exclude": ["src/botmaster/tests"]
 }

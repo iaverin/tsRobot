@@ -1,8 +1,8 @@
 import { expect, assert } from 'chai'
-import { RUNTIME_ERROR } from '../src/botmaster/core/commands'
+import { RUNTIME_ERROR } from '../core/commands'
 
-import { DIRECTION, WorldState } from '../src/botmaster/core/types'
-import { resolveInt, resolvers } from '../src/botmaster/core/commands'
+import { DIRECTION, WorldState } from '../core/types'
+import { resolveInt, resolvers } from '../core/commands'
 
 const initialWorld: WorldState = {
   board: {

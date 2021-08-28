@@ -1,6 +1,6 @@
 import { expect, assert } from 'chai'
-import * as runner from '../src/botmaster/core/runner'
-import { DIRECTION, WorldState } from '../src/botmaster/core/types'
+import * as runner from '../core/runner'
+import { DIRECTION, WorldState } from '../core/types'
 
 describe('Runner', () => {
   describe('Code loader', () => {
