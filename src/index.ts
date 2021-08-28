@@ -1,31 +1,64 @@
-import { DIRECTION, WorldState, runCommand, runScript } from './botmaster'
+import {
+  WorldState,
+  runScript,
+  initWorld,
+  loadCodeFromString
+} from './botmaster'
 
-let world:WorldState ={
-  board:{
-    height:5,
-    width: 5
-  },
-  bot:{
-    x:0,
-    y:0,
-    placed:false,
-    facingDirection: DIRECTION.NORTH
-  },
-  error: null,
-  output: null 
+const world:WorldState =initWorld(5,5)
+
+{
+  console.log('=== EXAMPLE a ====')
+  const commands = `PLACE 0,0,NORTH
+  MOVE
+  REPORT`
+  
+  console.log(loadCodeFromString(commands).join("\n"))
+  
+  const afterScriptWorld = runScript(world, commands, (s)=>{console.log(s)})
+
+  if(afterScriptWorld.error){
+    console.log('Error', afterScriptWorld.error)
+  }
+
 }
 
-const commands = `PLACE ,2,EAST
-MOVE
-MOVE
-LEFT
-MOVE
-REPORT
-`
+{
+  console.log('')
+  console.log('=== EXAMPLE b ====')
+  const commands = `PLACE 0,0,NORTH
+  LEFT
+  REPORT`
+  
+  console.log(loadCodeFromString(commands).join('\n'))
 
-let afterScriptWorld = runScript(world, commands, (s)=>{console.log(s)})
+  const afterScriptWorld = runScript(world, commands, (s) => {
+    console.log(s)
+  })
 
-if(afterScriptWorld.error){
-  console.log('Error', afterScriptWorld.error)
+  if (afterScriptWorld.error) {
+    console.log('Error', afterScriptWorld.error)
+  }
 }
 
+
+{
+  console.log('')
+  console.log('=== EXAMPLE c ====')
+  const commands = `PLACE 1,2,EAST
+    MOVE
+    MOVE
+    LEFT
+    MOVE
+    REPORT`
+  
+  console.log(loadCodeFromString(commands).join('\n'))
+  
+  const afterScriptWorld = runScript(world, commands, (s) => {
+    console.log(s)
+  })
+
+  if (afterScriptWorld.error) {
+    console.log('Error', afterScriptWorld.error)
+  }
+}
