@@ -1,4 +1,4 @@
-import { WorldState } from './commands'
+import { WorldState } from './types'
 
 export type Code = Array<string>
 

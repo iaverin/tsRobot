@@ -1,39 +1,10 @@
+import {DIRECTION, WorldState} from './types'
 import { CommandResolverMapping, PARSER_ERROR } from './parser'
 
 // Define types are using for proceeding commands
 
-export enum DIRECTION {
-  NORTH = 'NORTH',
-  SOUTH = 'SOUTH',
-  EAST = 'EAST',
-  WEST = 'WEST'
-}
-
 export enum RUNTIME_ERROR {
   WRONG_ARGUMENT_VALUE
-}
-
-type BotState = {
-  x: number
-  y: number
-  placed: boolean
-  facingDirection: DIRECTION
-}
-
-export type WorldState = {
-  board: {
-    width: number
-    height: number
-  }
-  
-  bot: BotState,
-  
-  output: string | null,
-  
-  error: {
-    type: RUNTIME_ERROR | PARSER_ERROR
-    message: string
-  } | null
 }
 
 // provide available types for parser to check arguments from commands

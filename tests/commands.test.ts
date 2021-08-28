@@ -1,6 +1,7 @@
 import { expect, assert } from 'chai'
-import { DIRECTION, RUNTIME_ERROR, WorldState } from '../src/core/commands'
+import { RUNTIME_ERROR } from '../src/core/commands'
 
+import { DIRECTION, WorldState } from '../src/core/types'
 import { resolvers } from '../src/core/commands'
 
 const initialWorld: WorldState = {
