@@ -147,7 +147,7 @@ Robot's command management component is locacted under ```src/botmaster``` direc
 # Self evaluation
 ### Overall
 - Code seems solid with maintained functional approach
-- No documentation and commenta in code provided
+- No documentation and comments in code provided (hope it shoud be self speaking)
 - Some naming could be slight confusing
    
 
