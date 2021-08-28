@@ -76,7 +76,7 @@ export function parseLine(
     return {
       ...parsedLine,
       error: {
-        message: `Worng arguments number: ${args.length}. Should be ${parsedLine.resolve.length}`,
+        message: `Wrong arguments number: ${args.length}. Should be ${parsedLine.resolve.length-1}`,
         type: PARSER_ERROR.WRONG_ARGUMENT_NUMBER
       }
     } as ParsedLine

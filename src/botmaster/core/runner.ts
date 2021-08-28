@@ -1,5 +1,6 @@
+import { WorldState } from './types'
 import { parseLine, PARSER_ERROR } from './parser'
-import { WorldState, resolvers, RUNTIME_ERROR } from './commands'
+import { resolvers, RUNTIME_ERROR } from './commands'
 
 export interface Output {
   (message: string): void
@@ -14,7 +15,7 @@ export type RunnerError =
 export function runCommand(
   world: WorldState,
   command: string,
-  outputCallback: Output
+  outputCallback?: Output
 ): WorldState {
 
   const cleanWolrd = { ...world, error: null, output: null }
@@ -37,7 +38,7 @@ export function runCommand(
     return updatedWorld
   }
 
-  if (updatedWorld.output) {
+  if (updatedWorld.output && outputCallback) {
     outputCallback(updatedWorld.output)
   }
 

@@ -1,6 +1,6 @@
 import { expect, assert } from 'chai'
-import * as parser from '../src/core/parser'
-import {DIRECTION,  WorldState} from '../src/core/types'
+import * as parser from '../src/botmaster/core/parser'
+import {DIRECTION,  WorldState} from '../src/botmaster/core/types'
 
 describe('Parser tests', () => {
   it('Should load code from string, trim and convert to uppercase ', () => {
