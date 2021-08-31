@@ -158,8 +158,6 @@ Thanks to typescript, separation of functional components and complete tests cov
 
 It's easy to add additional commands with different parameters. Current parser allows to map any functions with any numbers of parameters and automatically detect corecntess  number of arguments in user's commands. However type checking is the responcibility of resolving function (check ```./botmaster/core/commands.ts``` file).  
 
-However introducing features such as IFs, FORs and etc will require signigicant efforts. 
-
 ### Readiness for production 
 Ready for production. Has no internal state so ready for scaling ) 
 
