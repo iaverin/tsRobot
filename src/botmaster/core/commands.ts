@@ -11,6 +11,7 @@ export enum RUNTIME_ERROR {
 // TODO: extract types from commands implementation functions
 export type allowedArgumentTypes = number | DIRECTION
 
+// TODO KL: what is going on here? Why not just Number(value) 
 // types casting functions from extracted argument value as string token to typed value
 export function resolveInt(token: string): number {
   if(token.length === 0 ) return undefined
@@ -26,6 +27,7 @@ export function resolveInt(token: string): number {
 }
 
 // Commands resolvers mapping
+// TODO KL: where do you use description?
 export const resolvers: CommandResolverMapping = {
   PLACE: {
     description: 'Place the robot on board',
@@ -57,10 +59,13 @@ function placeResolver(
   argY: string,
   argDirection: string
 ) {
+  // TODO KL: this class breaks single responsibility principle
+  // it parses params, validates them and then executes the command
   const x = resolveInt(argX)
   const y = resolveInt(argY)
   const direction = DIRECTION[argDirection]
 
+  // TODO KL: this is super complicated, I would have some methods here with readable names
   if (!((!!x || x === 0)  && (!!y || y === 0) && direction)) {
     return {
       ...world,
@@ -71,6 +76,7 @@ function placeResolver(
     }
   }
 
+  // TODO KL: Why board would not have a method
   if (
     !(x >= 0 && x <= world.board.width && y >= 0 && y <= world.board.height)
   ) {
@@ -94,11 +100,14 @@ function placeResolver(
   }
 }
 
+// TODO KL: it is not really a resolver, it is an executor
 function moveResolver(world: WorldState): WorldState {
   let bot = world.bot
 
+  // TODO KL: how come this one does not report an error?
   if (!bot.placed) return { ...world }
 
+  // TODO KL: this could be solved smarter
   if (bot.x < world.board.width - 1 && bot.facingDirection === DIRECTION.EAST)
     bot.x += 1
 
@@ -119,6 +128,7 @@ function rightResolver(world: WorldState): WorldState {
   let bot = world.bot
   if (!bot.placed) return { ...world }
 
+  // TODO KL: could be done smarter
   switch (bot.facingDirection) {
     case DIRECTION.NORTH:
       bot.facingDirection = DIRECTION.EAST

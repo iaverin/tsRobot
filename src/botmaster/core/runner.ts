@@ -22,11 +22,15 @@ export function loadCodeFromString(s: string): Code | null {
     if (codeLine !== '') code.push(codeLine)
   })
 
+  // TODO KL: learn map/reduce operations, this is real FP thinking
+  // you can replace the whole function with this and it reads clearer
+  // return s.split('\n').map(v => v.trim()).filter(v => v.length > 0).map(v => v as Code)
   return code
 }  
 
 export function initWorld(width:number, height:number): WorldState{
 
+  // TODO KL: this smells bad, google gives `Number.isInteger`
   if (!(resolveInt(String(width)) && resolveInt(String(height)))){
     throw(Error("World's width and height should be integers"))
   }
@@ -65,6 +69,7 @@ export function runCommand( world: WorldState, command: string):WorldState {
     } as WorldState
   }
 
+  // TODO KL: bad smell here - why does parsedLine need to receive its own attributes?
   const newWorld = parsedLine.resolve(cleanWolrd, ...parsedLine.args)
 
   if (newWorld.error) {
