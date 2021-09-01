@@ -144,4 +144,6 @@ const world:WorldState =initWorld(5,5)
     console.log('Output', afterScriptWorld.output)
   }
 
+  //TODO: Create an application that can read in commands of the following form
+  // it means - make a program that reads, the current program does not do that 
 }

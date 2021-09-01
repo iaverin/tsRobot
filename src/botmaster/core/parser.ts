@@ -32,6 +32,13 @@ export function parseLine(
   line: string,
   resolvers: CommandResolverMapping
 ): ParsedLine {
+
+  // TODO KL: this could be made so much easier
+  // const [head, ...tail] = line.trim().split(' ');
+  // const token = head;
+  // const args = tail.join('').split(',');
+
+  // TODO KL: you are mixing parsing with validation
   const codeLine = line.trim()
   const commandTokenEndPosition =
     codeLine.indexOf(' ') >= 0 ? codeLine.indexOf(' ') : codeLine.length
@@ -41,16 +48,18 @@ export function parseLine(
       ? codeLine.substring(commandTokenEndPosition).trim().split(',')
       : []
 
+  
   let parsedLine: ParsedLine = { command: token, resolve: undefined, args: [] }
 
   if (!(token in resolvers)) {
+    // TODO KL: I think the biggest problem that you are using command pattern wrong
     return {
-      ...parsedLine,
+      ...parsedLine, 
       error: {
         type: PARSER_ERROR.COMMAND_NOT_FOUND,
         message: `Command ${token} not found`
       }
-    } as ParsedLine
+    } 
   }
 
   parsedLine = {
@@ -76,6 +85,7 @@ export function parseLine(
     }
   })
 
+  // TODO KL: what is checked here? can you express with words and create a method?
   if (parsedLine.resolve.length !== parsedLine.args.length + 1)
     return {
       ...parsedLine,
@@ -90,6 +100,7 @@ export function parseLine(
   return parsedLine
 }
 
+// TODO KL: probably worth putting the type at the beginning with other guys
 export type CommandResolverMapping = {
   [command: string]: {
     description?: string

@@ -4,6 +4,7 @@ import { DIRECTION, WorldState } from '../core/types'
 
 describe('Runner', () => {
   describe('Code loader', () => {
+    // TODO: what is Code Loader? Should be "#loadCodeFromString" or something
     it('Should load code from string, trim and convert to uppercase ', () => {
       const code = `
 
@@ -37,7 +38,7 @@ describe('Runner', () => {
 
   describe("Single command runner", ()=>{
 
-    const world =  runner.initWorld(5,5)
+    const world =  runner.initWorld(5,5) 
 
       it("Should run singe command", ()=>{
         expect(runner.runCommand(world, "PLACE 2,3, EAST")).to.deep.include({bot:{x:2,y:3, placed:true, facingDirection: DIRECTION.EAST}})
@@ -61,7 +62,7 @@ describe('Runner', () => {
   })
 
   describe("Script Runner", ()=>{
-      const world = runner.initWorld(5,5)
+      const world = runner.initWorld(5,5) // TODO: inconsistent spacing
 
       it("Should run script with output", ()=>{
 
